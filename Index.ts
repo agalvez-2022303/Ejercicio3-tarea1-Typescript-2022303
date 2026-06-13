@@ -1,5 +1,5 @@
 ﻿import * as readline from 'readline';
-import { crearIncidente, modificarIncidente } from './src/service/logica';
+import { buscarIncidentePorId, crearIncidente, modificarIncidente } from './src/service/logica';
 import { verIncidentes } from './src/function/function';
 import { Prioridad, estadoIncidente, esEstadoValido, esPrioridadValida } from './src/types/tipos';
 
@@ -75,14 +75,24 @@ async function menuCrear(): Promise<void> {
 async function menuModificar(): Promise<void> {
     const idTexto = await preguntar('ID del incidente a modificar: ');
     const id = Number(idTexto);
-    const nuevoEstado = await pedirEstado();
-    const modificado = modificarIncidente(id, nuevoEstado);
 
-    if (modificado) {
-        console.log('Estado actualizado!');
-    } else {
-        console.log('No se encontro ese ID');
+    if (!Number.isInteger(id) || id <= 0) {
+        console.log('ID no valido');
+        console.log('');
+        return;
     }
+
+    const incidente = buscarIncidentePorId(id);
+
+    if (!incidente) {
+        console.log('No se encontro ese ID');
+        console.log('');
+        return;
+    }
+
+    const nuevoEstado = await pedirEstado();
+    modificarIncidente(id, nuevoEstado);
+    console.log('Estado actualizado!');
     console.log('');
 }
 

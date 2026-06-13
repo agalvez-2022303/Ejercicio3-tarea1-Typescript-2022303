@@ -23,6 +23,15 @@ export function crearIncidente(datos: CrearIncidente): Incident {
     return nuevoIncidente;
 }
 
+export function buscarIncidentePorId(id: number): Incident | undefined {
+    for (let i = 0; i < incidentes.length; i++) {
+        if (incidentes[i].id === id) {
+            return incidentes[i];
+        }
+    }
+    return undefined;
+}
+
 export function modificarIncidente(id: number, nuevoEstado: estadoIncidente): boolean {
     for (let i = 0; i < incidentes.length; i++) {
         if (incidentes[i].id === id) {
