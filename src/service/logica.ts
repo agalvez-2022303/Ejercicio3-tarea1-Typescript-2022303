@@ -1,5 +1,5 @@
 ﻿import { Incident } from '../model/Incident';
-import { CrearIncidente } from '../types/tipos';
+import { CrearIncidente, estadoIncidente } from '../types/tipos';
 
 let ultimoID = 0;
 
@@ -21,4 +21,14 @@ export function crearIncidente(datos: CrearIncidente): Incident {
     incidentes.push(nuevoIncidente);
 
     return nuevoIncidente;
+}
+
+export function modificarIncidente(id: number, nuevoEstado: estadoIncidente): boolean {
+    for (let i = 0; i < incidentes.length; i++) {
+        if (incidentes[i].id === id) {
+            incidentes[i].estado = nuevoEstado;
+            return true;
+        }
+    }
+    return false;
 }
