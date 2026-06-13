@@ -1,7 +1,7 @@
 ﻿import * as readline from 'readline';
 import { crearIncidente, modificarIncidente } from './src/service/logica';
 import { verIncidentes } from './src/function/function';
-import { Prioridad, estadoIncidente } from './src/types/tipos';
+import { Prioridad, estadoIncidente, esEstadoValido, esPrioridadValida } from './src/types/tipos';
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -42,12 +42,34 @@ function cargarDatosDeEjemplo(): void {
     });
 }
 
+async function pedirEstado(): Promise<estadoIncidente> {
+    let estado = await preguntar('Estado (abierto/progreso/resuelto): ');
+
+    while (!esEstadoValido(estado)) {
+        console.log('Estado no valido. Solo: abierto, progreso o resuelto');
+        estado = await preguntar('Estado (abierto/progreso/resuelto): ');
+    }
+
+    return estado;
+}
+
+async function pedirPrioridad(): Promise<Prioridad> {
+    let prioridad = await preguntar('Prioridad (alta/media/baja): ');
+
+    while (!esPrioridadValida(prioridad)) {
+        console.log('Prioridad no valida. Solo: alta, media o baja');
+        prioridad = await preguntar('Prioridad (alta/media/baja): ');
+    }
+
+    return prioridad;
+}
+
 async function menuCrear(): Promise<void> {
     const titulo = await preguntar('Titulo: ');
     const descripcion = await preguntar('Descripcion: ');
     const reportadoPor = await preguntar('Reportado por: ');
-    const prioridad = await preguntar('Prioridad (alta/media/baja): ') as Prioridad;
-    const estado = await preguntar('Estado (abierto/progreso/resuelto): ') as estadoIncidente;
+    const prioridad = await pedirPrioridad();
+    const estado = await pedirEstado();
 
     crearIncidente({ titulo, descripcion, reportadoPor, prioridad, estado });
     console.log('Incidente creado!');
@@ -57,7 +79,7 @@ async function menuCrear(): Promise<void> {
 async function menuModificar(): Promise<void> {
     const idTexto = await preguntar('ID del incidente a modificar: ');
     const id = Number(idTexto);
-    const nuevoEstado = await preguntar('Estado (abierto/progreso/resuelto): ') as estadoIncidente;
+    const nuevoEstado = await pedirEstado();
     const modificado = modificarIncidente(id, nuevoEstado);
 
     if (modificado) {
