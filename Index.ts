@@ -21,24 +21,21 @@ function cargarDatosDeEjemplo(): void {
         titulo: 'El wifi no funciona',
         descripcion: 'No hay internet en la oficina',
         reportadoPor: 'Ana',
-        prioridad: 'baja',
-        estado: 'abierto'
+        prioridad: 'baja'
     });
 
     crearIncidente({
         titulo: 'Servidor caido',
         descripcion: 'La pagina no carga',
         reportadoPor: 'Carlos',
-        prioridad: 'alta',
-        estado: 'abierto'
+        prioridad: 'alta'
     });
 
     crearIncidente({
         titulo: 'Impresora rota',
         descripcion: 'La impresora hace ruido raro',
         reportadoPor: 'Luis',
-        prioridad: 'media',
-        estado: 'abierto'
+        prioridad: 'media'
     });
 }
 
@@ -69,10 +66,9 @@ async function menuCrear(): Promise<void> {
     const descripcion = await preguntar('Descripcion: ');
     const reportadoPor = await preguntar('Reportado por: ');
     const prioridad = await pedirPrioridad();
-    const estado = await pedirEstado();
 
-    crearIncidente({ titulo, descripcion, reportadoPor, prioridad, estado });
-    console.log('Incidente creado!');
+    crearIncidente({ titulo, descripcion, reportadoPor, prioridad });
+    console.log('Incidente creado con estado: abierto');
     console.log('');
 }
 

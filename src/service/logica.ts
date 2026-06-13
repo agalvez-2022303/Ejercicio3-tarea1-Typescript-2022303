@@ -14,7 +14,7 @@ export function crearIncidente(datos: CrearIncidente): Incident {
         descripcion: datos.descripcion,
         reportadoPor: datos.reportadoPor,
         prioridad: datos.prioridad,
-        estado: datos.estado,
+        estado: 'abierto',
         fechaCreacion: new Date()
     };
 
